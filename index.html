@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kelleher Family Ireland Trip — Aug 28 – Sep 15, 2026</title>
+<style>
+  :root {
+    --travel: #d97706;
+    --travel-bg: #fff7ed;
+    --dublin: #2563eb;
+    --dublin-bg: #eff6ff;
+    --cavan: #16a34a;
+    --cavan-bg: #f0fdf4;
+    --lahinch: #7c3aed;
+    --lahinch-bg: #f5f3ff;
+    --open: #6b7280;
+    --open-bg: #f9fafb;
+    --ink: #1f2937;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: #fafafa;
+    padding: 24px;
+  }
+  header.page {
+    max-width: 1100px;
+    margin: 0 auto 24px;
+  }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  .subtitle { color: var(--muted); margin: 0 0 16px; font-size: 0.95rem; }
+
+  .toolbar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  button.print-btn {
+    background: var(--ink);
+    color: white;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  button.print-btn:hover { opacity: 0.85; }
+
+  .legend {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .legend span.swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+
+  .open-items {
+    max-width: 1100px;
+    margin: 24px auto 0;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 0.88rem;
+  }
+  .open-items strong { display: block; margin-bottom: 8px; color: #92400e; }
+  .open-items ul { margin: 0 0 10px; padding-left: 20px; list-style: none; }
+  .open-items li {
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .open-items li .remove-item {
+    border: none;
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1.2;
+    padding: 0 2px;
+    flex-shrink: 0;
+  }
+  .open-items li .remove-item:hover { color: #b91c1c; }
+  .add-item-row { display: flex; gap: 8px; }
+  .add-item-row input {
+    flex-grow: 1;
+    padding: 7px 9px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-family: inherit;
+  }
+  .add-item-row button {
+    padding: 7px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: white;
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+  .add-item-row button:hover { background: #f3f4f6; }
+
+  main.calendar {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .weekday-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .weekday-header span {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+  .week-block { margin-bottom: 26px; }
+  .week-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+  }
+  .day-card.pad {
+    background: transparent;
+    border: 1px dashed var(--border);
+    border-left: 1px dashed var(--border);
+    cursor: default;
+    box-shadow: none;
+    opacity: 0.55;
+  }
+  .day-card.pad:hover { box-shadow: none; transform: none; }
+  .day-card.pad .day-date { color: var(--muted); font-weight: 500; }
+  .day-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--open);
+    border-radius: 8px;
+    padding: 10px 12px;
+    min-height: 118px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.15s, transform 0.15s;
+  }
+  .day-card:hover {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    transform: translateY(-1px);
+  }
+  .day-card.travel { border-left-color: var(--travel); }
+  .day-card.dublin { border-left-color: var(--dublin); }
+  .day-card.cavan { border-left-color: var(--cavan); }
+  .day-card.lahinch { border-left-color: var(--lahinch); }
+  .day-card.open { border-left-color: var(--open); }
+
+  .day-date { font-weight: 700; font-size: 0.95rem; }
+  .day-weekday { font-size: 0.72rem; color: var(--muted); margin-bottom: 6px; }
+  .day-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    width: fit-content;
+  }
+  .day-card.travel .day-tag { color: var(--travel); background: var(--travel-bg); }
+  .day-card.dublin .day-tag { color: var(--dublin); background: var(--dublin-bg); }
+  .day-card.cavan .day-tag { color: var(--cavan); background: var(--cavan-bg); }
+  .day-card.lahinch .day-tag { color: var(--lahinch); background: var(--lahinch-bg); }
+  .day-card.open .day-tag { color: var(--open); background: var(--open-bg); }
+
+  .day-summary { font-size: 0.8rem; color: var(--ink); flex-grow: 1; }
+  .day-flights { margin-top: 6px; display: flex; flex-direction: column; gap: 3px; }
+  .day-flight-line {
+    font-size: 0.66rem;
+    font-weight: 600;
+    color: var(--travel);
+    background: var(--travel-bg);
+    border-radius: 4px;
+    padding: 2px 6px;
+    width: fit-content;
+  }
+
+  /* Modal */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .overlay.active { display: flex; }
+  .modal {
+    background: white;
+    border-radius: 10px;
+    max-width: 520px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 22px 24px;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    border: none;
+    background: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: var(--muted);
+    line-height: 1;
+  }
+  .modal h2 { margin: 0 0 8px; font-size: 1.2rem; }
+  .modal .day-tag { margin-bottom: 12px; }
+  .modal .modal-summary {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .modal .modal-address {
+    font-size: 0.88rem;
+    color: var(--ink);
+    background: #f9fafb;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+  }
+  .modal .modal-flights { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+  .flight-chip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    align-items: baseline;
+    font-size: 0.85rem;
+    background: #f9fafb;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 10px;
+  }
+  .flight-chip .flight-num { font-weight: 700; }
+  .flight-chip .flight-times { color: var(--muted); }
+  .flight-chip .flight-people-tag {
+    color: var(--dublin);
+    font-weight: 600;
+    font-size: 0.78rem;
+  }
+  .modal ul.detail-list { margin: 0; padding-left: 20px; }
+  .modal ul.detail-list li { margin-bottom: 8px; font-size: 0.92rem; line-height: 1.4; }
+  .modal .edit-btn {
+    margin-top: 14px;
+    background: none;
+    border: 1px solid var(--border);
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .modal .edit-btn:hover { background: #f3f4f6; }
+  .modal label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin: 14px 0 5px;
+  }
+  .modal label:first-of-type { margin-top: 8px; }
+  .modal input[type="text"], .modal select, .modal textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: var(--ink);
+  }
+  .modal textarea { resize: vertical; }
+  #flights-editor { display: flex; flex-direction: column; gap: 8px; }
+  .flight-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px 8px;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  .flight-row > input {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-family: inherit;
+  }
+  .flight-people { grid-column: 1 / -1; }
+  .flight-people-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-bottom: 5px;
+  }
+  .flight-people-checks { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+  .person-check {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    color: var(--ink);
+    text-transform: none;
+    font-weight: 400;
+  }
+  .person-check input { margin: 0; }
+  .flight-row .remove-flight {
+    border: none;
+    background: #fee2e2;
+    color: #b91c1c;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.78rem;
+    padding: 6px 8px;
+  }
+  .flight-row .remove-flight:hover { background: #fecaca; }
+  .add-flight-btn {
+    display: block;
+    background: none;
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    padding: 7px 12px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    color: var(--ink);
+    margin-top: 8px;
+  }
+  .add-flight-btn:hover { background: #f3f4f6; }
+  .edit-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+  .edit-actions button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: white;
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+  .edit-actions button.save-btn { background: var(--ink); color: white; border-color: var(--ink); }
+  .edit-actions button:hover { opacity: 0.85; }
+
+  /* Print view: hidden on screen, shown when printing */
+  #print-view { display: none; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .toolbar, .overlay, .legend { display: none !important; }
+    header.page, .open-items, main.calendar { display: none !important; }
+    #print-view {
+      display: block !important;
+      max-width: 100%;
+    }
+    #print-view h1 { font-size: 1.4rem; }
+    #print-view .print-day {
+      break-inside: avoid;
+      border-bottom: 1px solid #ccc;
+      padding: 10px 0;
+    }
+    #print-view .print-day h3 { margin: 0 0 2px; font-size: 1rem; }
+    #print-view .print-day .pd-meta { color: #555; font-size: 0.8rem; margin-bottom: 6px; }
+    #print-view ul { margin: 0; padding-left: 18px; font-size: 0.88rem; }
+  }
+
+  @media (max-width: 720px) {
+    .week-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header class="page">
+  <h1>Kelleher Family Ireland Trip</h1>
+  <p class="subtitle">August 28 – September 15, 2026</p>
+  <div class="toolbar">
+    <button class="print-btn" onclick="window.print()">Print full itinerary</button>
+    <div class="legend">
+      <span><span class="swatch" style="background:var(--travel)"></span>Travel day</span>
+      <span><span class="swatch" style="background:var(--dublin)"></span>Dublin</span>
+      <span><span class="swatch" style="background:var(--cavan)"></span>Cavan</span>
+      <span><span class="swatch" style="background:var(--lahinch)"></span>Lahinch</span>
+      <span><span class="swatch" style="background:var(--open)"></span>Open / TBD</span>
+    </div>
+  </div>
+</header>
+
+<main class="calendar" id="calendar"></main>
+
+<div class="open-items">
+  <strong>Still needs planning</strong>
+  <ul id="open-items-list"></ul>
+  <div class="add-item-row">
+    <input type="text" id="new-open-item" placeholder="Add an item..." onkeydown="if(event.key==='Enter') addOpenItem()">
+    <button onclick="addOpenItem()">Add</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this) closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+
+<div id="print-view"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+<script>
+const days = [
+  { date:"2026-08-28", weekday:"Fri", loc:"travel", tag:"Travel",
+    summary:"Maura flies SFO → Dublin (overnight) · rest of family still home",
+    address:"",
+    flights:[
+      { num:"EI0060", from:"SFO", to:"DUB", depart:"Fri 8/28, 17:35", arrive:"Sat 8/29, 11:45 (+1 day)", people:["Maura"] }
+    ],
+    details:[
+      "Rest of family still home in the Bay Area — departs Mon 8/31"
+    ]},
+  { date:"2026-08-29", weekday:"Sat", loc:"travel", tag:"Travel",
+    summary:"Maura arrives Dublin, connects onward to London · family still home",
+    address:"London — accommodation TBD",
+    flights:[
+      { num:"EI0166", from:"DUB", to:"LHR", depart:"13:30", arrive:"15:00", people:["Maura"] }
+    ],
+    details:[
+      "Maura arrives Dublin 11:45am (overnight EI0060)",
+      "Maura based in London through Mon 8/31",
+      "Family still home in the Bay Area"
+    ]},
+  { date:"2026-08-30", weekday:"Sun", loc:"open", tag:"Open",
+    summary:"Maura's free day in London — plans TBD",
+    address:"London — accommodation TBD",
+    flights:[],
+    details:[
+      "Maura: free day in London — no plans set yet",
+      "Family: last day at home before flying out tomorrow"
+    ]},
+  { date:"2026-08-31", weekday:"Mon", loc:"travel", tag:"Travel",
+    summary:"Family flies SFO → Chicago → overnight to Dublin · Maura's last day in London",
+    address:"",
+    flights:[
+      { num:"UA2317", from:"SFO", to:"ORD", depart:"12:00pm", arrive:"6:32pm", people:["Mom","Dad","Thomas","Aidan","Ryan"] },
+      { num:"UA980", from:"ORD", to:"DUB", depart:"8:20pm", arrive:"Tue 9/1, 9:45am", people:["Mom","Dad","Thomas","Aidan","Ryan"] }
+    ],
+    details:[
+      "Maura: last day in London — flies to Dublin tomorrow morning"
+    ]},
+  { date:"2026-09-01", weekday:"Tue", loc:"dublin", tag:"Dublin",
+    summary:"Whole group together in Dublin — check into Oakley Road",
+    address:"26 Oakley Road, Dublin 6, County Dublin D06 CK66",
+    flights:[
+      { num:"EI0153", from:"LHR", to:"DUB", depart:"08:50", arrive:"10:15am", people:["Maura"] }
+    ],
+    details:[
+      "Family arrives Dublin Airport 9:45am (overnight UA980)",
+      "Aunt Mary joins the group — flight details TBD"
+    ]},
+  { date:"2026-09-02", weekday:"Wed", loc:"dublin", tag:"Dublin",
+    summary:"Dublin sightseeing · dinner with relatives tonight",
+    address:"26 Oakley Road, Dublin 6, County Dublin D06 CK66",
+    flights:[],
+    details:[
+      "Daytime free in Dublin",
+      "Evening: dinner with relatives in Dublin"
+    ]},
+  { date:"2026-09-03", weekday:"Thu", loc:"dublin", tag:"Dublin",
+    summary:"Dublin — free day",
+    address:"26 Oakley Road, Dublin 6, County Dublin D06 CK66",
+    flights:[],
+    details:[
+      "Free day / sightseeing — plans TBD",
+      "Last night at Oakley Road"
+    ]},
+  { date:"2026-09-04", weekday:"Fri", loc:"cavan", tag:"Cavan",
+    summary:"Travel day — drive Dublin → County Cavan",
+    address:"County Cavan — accommodation TBD",
+    flights:[],
+    details:[
+      "Check out of 26 Oakley Road",
+      "Drive to County Cavan"
+    ]},
+  { date:"2026-09-05", weekday:"Sat", loc:"cavan", tag:"Cavan",
+    summary:"Visit Grandpa Tom's house in Cavan",
+    address:"County Cavan — accommodation TBD",
+    flights:[],
+    details:[
+      "Daytime: visit to Grandpa Tom's house"
+    ]},
+  { date:"2026-09-06", weekday:"Sun", loc:"cavan", tag:"Cavan",
+    summary:"Evening with relatives in Cavan",
+    address:"County Cavan — accommodation TBD",
+    flights:[],
+    details:[
+      "Evening: gathering with relatives in Cavan"
+    ]},
+  { date:"2026-09-07", weekday:"Mon", loc:"lahinch", tag:"Lahinch",
+    summary:"Travel day — drive Cavan → Lahinch",
+    address:"Lahinch, Co. Clare — accommodation TBD",
+    flights:[],
+    details:[
+      "Check out of Cavan accommodation",
+      "Drive to Lahinch, Co. Clare"
+    ]},
+  { date:"2026-09-08", weekday:"Tue", loc:"lahinch", tag:"Lahinch",
+    summary:"Lahinch — activity day (TBD)",
+    address:"Lahinch, Co. Clare — accommodation TBD",
+    flights:[],
+    details:[
+      "Ideas to consider: Cliffs of Moher hike, surf lesson on Lahinch Beach, round at Lahinch Golf Club",
+      "Group to decide and firm up plan"
+    ]},
+  { date:"2026-09-09", weekday:"Wed", loc:"lahinch", tag:"Lahinch",
+    summary:"Lahinch — activity day (TBD)",
+    address:"Lahinch, Co. Clare — accommodation TBD",
+    flights:[],
+    details:[
+      "Ideas to consider: Burren hiking or cycling, Doolin day trip, Wild Atlantic Way bike route",
+      "Group to decide and firm up plan"
+    ]},
+  { date:"2026-09-10", weekday:"Thu", loc:"travel", tag:"Travel",
+    summary:"Maura flies home via JFK · rest of family stays in Lahinch",
+    address:"Lahinch, Co. Clare — accommodation TBD (family staying)",
+    flights:[
+      { num:"EI0105", from:"DUB", to:"JFK", depart:"11:10", arrive:"13:40", people:["Maura"] }
+    ],
+    details:[
+      "Morning: drive Lahinch → Dublin Airport (~3 hrs — build in a buffer)"
+    ]},
+  { date:"2026-09-11", weekday:"Fri", loc:"lahinch", tag:"Lahinch",
+    summary:"Last day of current Lahinch booking",
+    address:"Lahinch, Co. Clare — accommodation TBD (booked through today)",
+    flights:[],
+    details:[
+      "Plans for Sep 11–14 not yet set — needs a group decision (stay in Clare, head toward Dublin, etc.)"
+    ]},
+  { date:"2026-09-12", weekday:"Sat", loc:"open", tag:"Open",
+    summary:"No plans yet",
+    address:"",
+    flights:[],
+    details:["Location and activity TBD"]},
+  { date:"2026-09-13", weekday:"Sun", loc:"open", tag:"Open",
+    summary:"No plans yet",
+    address:"",
+    flights:[],
+    details:["Location and activity TBD"]},
+  { date:"2026-09-14", weekday:"Mon", loc:"open", tag:"Open",
+    summary:"No plans yet",
+    address:"",
+    flights:[],
+    details:["Location and activity TBD — consider positioning near Dublin for tomorrow's flight"]},
+  { date:"2026-09-15", weekday:"Tue", loc:"travel", tag:"Travel",
+    summary:"Family flies Dublin → Chicago → SFO",
+    address:"",
+    flights:[
+      { num:"UA981", from:"DUB", to:"ORD", depart:"11:35am", arrive:"1:40pm", people:["Mom","Dad","Thomas","Aidan","Ryan"] },
+      { num:"UA1334", from:"ORD", to:"SFO", depart:"3:35pm", arrive:"6:24pm", people:["Mom","Dad","Thomas","Aidan","Ryan"] }
+    ],
+    details:[]},
+];
+
+const CATEGORY_LABELS = { travel:'Travel', dublin:'Dublin', cavan:'Cavan', lahinch:'Lahinch', open:'Open' };
+const ROSTER = ["Maura", "Mom", "Dad", "Thomas", "Aidan", "Ryan", "Aunt Mary"];
+
+const defaultOpenItems = [
+  "Aunt Mary's flight details",
+  "Cavan accommodation address",
+  "Lahinch accommodation address",
+  "Lahinch activities — pick from hiking, surfing, golf, biking (see Sep 8–9 for starter ideas)",
+  "What the family does Sep 11–14, between checking out of Lahinch and the Sep 15 flight home",
+  "Maura's Aug 30 free day in London"
+];
+let openItems = defaultOpenItems.slice();
+
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyADRD0NOiIGq8YwK6vrW8YMYkRaFkdoAnI",
+  authDomain: "ireland-trip-planner-a38a3.firebaseapp.com",
+  databaseURL: "https://ireland-trip-planner-a38a3-default-rtdb.firebaseio.com",
+  projectId: "ireland-trip-planner-a38a3",
+  storageBucket: "ireland-trip-planner-a38a3.firebasestorage.app",
+  messagingSenderId: "707788330062",
+  appId: "1:707788330062:web:7f6aa07759ba9036e89f1f"
+};
+
+const defaultByDate = {};
+days.forEach(d => { defaultByDate[d.date] = JSON.parse(JSON.stringify(d)); });
+
+const dayMap = {};
+days.forEach(d => dayMap[d.date] = d);
+
+let overridesRef = null;
+let openItemsRef = null;
+let firebaseReady = false;
+
+function applyOverrides(overrides) {
+  days.forEach(d => {
+    const base = JSON.parse(JSON.stringify(defaultByDate[d.date]));
+    Object.assign(d, base, (overrides && overrides[d.date]) || {});
+  });
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function isoDate(d) {
+  const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), da = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${da}`;
+}
+function fmtShort(d) {
+  return `${d.toLocaleString('en-US',{month:'short'})} ${d.getDate()}`;
+}
+
+function buildCalendar() {
+  const cal = document.getElementById('calendar');
+  cal.innerHTML = '';
+
+  // Monday-start grid: pad out to full weeks around the trip's date range.
+  const tripStart = new Date(days[0].date + "T00:00:00");
+  const tripEnd = new Date(days[days.length-1].date + "T00:00:00");
+  const daysBack = (tripStart.getDay() + 6) % 7; // Mon=0 ... Sun=6
+  const calStart = new Date(tripStart); calStart.setDate(calStart.getDate() - daysBack);
+  const daysForward = (7 - ((tripEnd.getDay() + 6) % 7) - 1 + 7) % 7;
+  const calEnd = new Date(tripEnd); calEnd.setDate(calEnd.getDate() + daysForward);
+
+  const allDates = [];
+  for (let d = new Date(calStart); d <= calEnd; d.setDate(d.getDate()+1)) {
+    allDates.push(new Date(d));
+  }
+  const weeks = [];
+  for (let i=0; i<allDates.length; i+=7) weeks.push(allDates.slice(i, i+7));
+
+  const header = document.createElement('div');
+  header.className = 'weekday-header';
+  ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].forEach(w => {
+    const span = document.createElement('span');
+    span.textContent = w;
+    header.appendChild(span);
+  });
+  cal.appendChild(header);
+
+  weeks.forEach((week, wi) => {
+    const block = document.createElement('div');
+    block.className = 'week-block';
+    const label = document.createElement('div');
+    label.className = 'week-label';
+    label.textContent = `Week ${wi+1}  ·  ${fmtShort(week[0])} – ${fmtShort(week[week.length-1])}`;
+    block.appendChild(label);
+    const grid = document.createElement('div');
+    grid.className = 'week-grid';
+    week.forEach(d => {
+      const day = dayMap[isoDate(d)];
+      const card = document.createElement('div');
+      if (day) {
+        card.className = `day-card ${day.loc}`;
+        card.onclick = () => openModal(day);
+        const flightsBoxHtml = (day.flights && day.flights.length)
+          ? `<div class="day-flights">${day.flights.map(f => `<div class="day-flight-line">✈ ${escapeHtml(f.num)} ${escapeHtml(f.from)}→${escapeHtml(f.to)}</div>`).join('')}</div>`
+          : '';
+        card.innerHTML = `
+          <div class="day-date">${fmtShort(d)}</div>
+          <div class="day-tag">${escapeHtml(day.tag)}</div>
+          <div class="day-summary">${escapeHtml(day.summary)}</div>
+          ${flightsBoxHtml}
+        `;
+      } else {
+        card.className = 'day-card pad';
+        card.innerHTML = `<div class="day-date">${fmtShort(d)}</div>`;
+      }
+      grid.appendChild(card);
+    });
+    block.appendChild(grid);
+    cal.appendChild(block);
+  });
+}
+
+function openModal(day) {
+  renderView(day);
+  document.getElementById('overlay').classList.add('active');
+}
+function flightChipHtml(f) {
+  const peopleHtml = (f.people && f.people.length)
+    ? `<span class="flight-people-tag">${escapeHtml(f.people.join(', '))}</span>`
+    : '';
+  return `<div class="flight-chip">
+    <span class="flight-num">${escapeHtml(f.num)}</span>
+    <span class="flight-route">${escapeHtml(f.from)} → ${escapeHtml(f.to)}</span>
+    <span class="flight-times">${escapeHtml(f.depart)} → ${escapeHtml(f.arrive)}</span>
+    ${peopleHtml}
+  </div>`;
+}
+function renderView(day) {
+  const modal = document.getElementById('modal');
+  const d = new Date(day.date + "T00:00:00");
+  const fullDate = d.toLocaleString('en-US',{ weekday:'long', month:'long', day:'numeric' });
+  const addressHtml = day.address ? `<div class="modal-address">Accommodation: ${escapeHtml(day.address)}</div>` : '';
+  const flightsHtml = (day.flights && day.flights.length)
+    ? `<div class="modal-flights">${day.flights.map(flightChipHtml).join('')}</div>`
+    : '';
+  modal.innerHTML = `
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div class="day-tag">${escapeHtml(day.tag)}</div>
+    <h2>${fullDate}</h2>
+    <div class="modal-summary">${escapeHtml(day.summary)}</div>
+    ${addressHtml}
+    ${flightsHtml}
+    <ul class="detail-list">
+      ${day.details.map(x => `<li>${escapeHtml(x)}</li>`).join('')}
+    </ul>
+    <button class="edit-btn" onclick="renderEdit('${day.date}')">Edit day</button>
+  `;
+}
+function addFlightRow(flight) {
+  const container = document.getElementById('flights-editor');
+  const f = flight || {};
+  const people = f.people || [];
+  const row = document.createElement('div');
+  row.className = 'flight-row';
+  row.innerHTML = `
+    <input type="text" class="flight-num" placeholder="Flight #" value="${escapeHtml(f.num || '')}">
+    <input type="text" class="flight-from" placeholder="From (airport)" value="${escapeHtml(f.from || '')}">
+    <input type="text" class="flight-to" placeholder="To (airport)" value="${escapeHtml(f.to || '')}">
+    <input type="text" class="flight-depart" placeholder="Departs" value="${escapeHtml(f.depart || '')}">
+    <input type="text" class="flight-arrive" placeholder="Arrives" value="${escapeHtml(f.arrive || '')}">
+    <button type="button" class="remove-flight" onclick="this.closest('.flight-row').remove()">Remove</button>
+    <div class="flight-people">
+      <span class="flight-people-label">Who's on this flight?</span>
+      <div class="flight-people-checks">
+        ${ROSTER.map(name => `
+          <label class="person-check">
+            <input type="checkbox" value="${escapeHtml(name)}" ${people.includes(name) ? 'checked' : ''}>
+            ${escapeHtml(name)}
+          </label>`).join('')}
+      </div>
+    </div>
+  `;
+  container.appendChild(row);
+}
+function renderEdit(dateStr) {
+  const day = dayMap[dateStr];
+  const modal = document.getElementById('modal');
+  const d = new Date(day.date + "T00:00:00");
+  const fullDate = d.toLocaleString('en-US',{ weekday:'long', month:'long', day:'numeric' });
+  modal.innerHTML = `
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <h2>Edit ${fullDate}</h2>
+    <label for="edit-cat">Category</label>
+    <select id="edit-cat">
+      <option value="travel">Travel</option>
+      <option value="dublin">Dublin</option>
+      <option value="cavan">Cavan</option>
+      <option value="lahinch">Lahinch</option>
+      <option value="open">Open</option>
+    </select>
+    <label for="edit-summary">Summary (shown on the calendar box)</label>
+    <input type="text" id="edit-summary" value="${escapeHtml(day.summary)}">
+    <label for="edit-address">Accommodation (address)</label>
+    <input type="text" id="edit-address" placeholder="e.g. 26 Oakley Road, Dublin 6" value="${escapeHtml(day.address || '')}">
+    <label>Flights</label>
+    <div id="flights-editor"></div>
+    <button type="button" class="add-flight-btn" onclick="addFlightRow()">+ Add flight</button>
+    <label for="edit-details">Notes (one per line)</label>
+    <textarea id="edit-details" rows="5">${escapeHtml(day.details.join('\n'))}</textarea>
+    <div class="edit-actions">
+      <button onclick="cancelEdit('${dateStr}')">Cancel</button>
+      <button class="save-btn" onclick="saveEdit('${dateStr}')">Save</button>
+    </div>
+  `;
+  document.getElementById('edit-cat').value = day.loc;
+  (day.flights || []).forEach(f => addFlightRow(f));
+}
+function saveEdit(dateStr) {
+  const day = dayMap[dateStr];
+  const loc = document.getElementById('edit-cat').value;
+  const flights = Array.from(document.querySelectorAll('#flights-editor .flight-row')).map(row => ({
+    num: row.querySelector('.flight-num').value.trim(),
+    from: row.querySelector('.flight-from').value.trim(),
+    to: row.querySelector('.flight-to').value.trim(),
+    depart: row.querySelector('.flight-depart').value.trim(),
+    arrive: row.querySelector('.flight-arrive').value.trim(),
+    people: Array.from(row.querySelectorAll('.person-check input:checked')).map(cb => cb.value)
+  })).filter(f => f.num || f.from || f.to || f.depart || f.arrive || f.people.length);
+  const updated = {
+    loc,
+    tag: CATEGORY_LABELS[loc],
+    summary: document.getElementById('edit-summary').value.trim(),
+    address: document.getElementById('edit-address').value.trim(),
+    flights,
+    details: document.getElementById('edit-details').value.split('\n').map(s => s.trim()).filter(Boolean)
+  };
+  Object.assign(day, updated);
+  if (firebaseReady) overridesRef.child(dateStr).set(updated);
+  buildCalendar();
+  buildPrintView();
+  renderView(day);
+}
+function cancelEdit(dateStr) {
+  renderView(dayMap[dateStr]);
+}
+function closeModal() {
+  document.getElementById('overlay').classList.remove('active');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+function buildOpenItems() {
+  const list = document.getElementById('open-items-list');
+  list.innerHTML = '';
+  openItems.forEach((item, i) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${escapeHtml(item)}</span><button class="remove-item" title="Remove" onclick="removeOpenItem(${i})">&times;</button>`;
+    list.appendChild(li);
+  });
+}
+function saveOpenItems() {
+  if (firebaseReady) openItemsRef.set(openItems);
+}
+function removeOpenItem(i) {
+  openItems.splice(i, 1);
+  saveOpenItems();
+  buildOpenItems();
+}
+function addOpenItem() {
+  const input = document.getElementById('new-open-item');
+  const val = input.value.trim();
+  if (!val) return;
+  openItems.push(val);
+  saveOpenItems();
+  input.value = '';
+  buildOpenItems();
+}
+
+function buildPrintView() {
+  const pv = document.getElementById('print-view');
+  let html = `<h1>Kelleher Family Ireland Trip — Aug 28 – Sep 15, 2026</h1>
+    <p style="color:#555;font-size:0.85rem;">Who's going: Maura, Mom, Dad, Thomas, Aidan, Ryan, Aunt Mary</p>`;
+  days.forEach(day => {
+    const d = new Date(day.date + "T00:00:00");
+    const fullDate = d.toLocaleString('en-US',{ weekday:'long', month:'long', day:'numeric' });
+    const addressLine = day.address ? `<div class="pd-meta">Accommodation: ${escapeHtml(day.address)}</div>` : '';
+    const flightLines = (day.flights && day.flights.length)
+      ? `<ul class="pd-flights">${day.flights.map(f => `<li>${escapeHtml(f.num)}: ${escapeHtml(f.from)} → ${escapeHtml(f.to)}, ${escapeHtml(f.depart)} → ${escapeHtml(f.arrive)}${(f.people && f.people.length) ? ' — ' + escapeHtml(f.people.join(', ')) : ''}</li>`).join('')}</ul>`
+      : '';
+    html += `<div class="print-day">
+      <h3>${fullDate} — ${escapeHtml(day.tag)}</h3>
+      ${addressLine}
+      ${flightLines}
+      <ul>${day.details.map(x => `<li>${escapeHtml(x)}</li>`).join('')}</ul>
+    </div>`;
+  });
+  pv.innerHTML = html;
+}
+
+function initSync() {
+  if (FIREBASE_CONFIG.apiKey === "YOUR_API_KEY") {
+    console.warn('Firebase sync not configured — running locally only. Fill in FIREBASE_CONFIG to enable shared editing.');
+    buildCalendar();
+    buildPrintView();
+    buildOpenItems();
+    return;
+  }
+
+  firebase.initializeApp(FIREBASE_CONFIG);
+  const db = firebase.database();
+  overridesRef = db.ref('trip/dayOverrides');
+  openItemsRef = db.ref('trip/openItems');
+  firebaseReady = true;
+
+  overridesRef.on('value', snapshot => {
+    applyOverrides(snapshot.val() || {});
+    buildCalendar();
+    buildPrintView();
+  });
+
+  openItemsRef.on('value', snapshot => {
+    const val = snapshot.val();
+    openItems = Array.isArray(val) ? val : defaultOpenItems.slice();
+    buildOpenItems();
+  });
+}
+
+initSync();
+</script>
+
+</body>
+</html>
