@@ -262,6 +262,8 @@
     padding: 8px 10px;
     margin-bottom: 10px;
   }
+  .modal .modal-address a { color: var(--dublin); font-weight: 600; text-decoration: none; }
+  .modal .modal-address a:hover { text-decoration: underline; }
   .modal .modal-flights { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
   .flight-chip {
     display: flex;
@@ -492,16 +494,20 @@ const days = [
   { date:"2026-09-01", weekday:"Tue", loc:"dublin", tag:"Dublin",
     summary:"Whole group together in Dublin — check into Oakley Road",
     address:"26 Oakley Road, Dublin 6, County Dublin D06 CK66",
+    addressLink:"https://www.airbnb.com/rooms/563858234078624358?source_impression_id=p3_1780415995_P3-c07BnFIyuqPqR",
     flights:[
       { num:"EI0153", from:"LHR", to:"DUB", depart:"08:50", arrive:"10:15am", people:["Maura"] }
     ],
     details:[
       "Family arrives Dublin Airport 9:45am (overnight UA980)",
-      "Aunt Mary joins the group — flight details TBD"
+      "Aunt Mary joins the group — flight details TBD",
+      "5:30pm: drinks at BAR 1661",
+      "7:30pm: dinner at Little Dumpling"
     ]},
   { date:"2026-09-02", weekday:"Wed", loc:"dublin", tag:"Dublin",
     summary:"Dublin sightseeing · dinner with relatives tonight",
     address:"26 Oakley Road, Dublin 6, County Dublin D06 CK66",
+    addressLink:"https://www.airbnb.com/rooms/563858234078624358?source_impression_id=p3_1780415995_P3-c07BnFIyuqPqR",
     flights:[],
     details:[
       "Daytime free in Dublin",
@@ -510,36 +516,44 @@ const days = [
   { date:"2026-09-03", weekday:"Thu", loc:"dublin", tag:"Dublin",
     summary:"Dublin — free day",
     address:"26 Oakley Road, Dublin 6, County Dublin D06 CK66",
+    addressLink:"https://www.airbnb.com/rooms/563858234078624358?source_impression_id=p3_1780415995_P3-c07BnFIyuqPqR",
     flights:[],
     details:[
       "Free day / sightseeing — plans TBD",
+      "8:30pm: dinner at Lotties with the rest of the cousins in Dublin",
       "Last night at Oakley Road"
     ]},
   { date:"2026-09-04", weekday:"Fri", loc:"cavan", tag:"Cavan",
     summary:"Travel day — drive Dublin → County Cavan",
-    address:"County Cavan — accommodation TBD",
+    address:"Leeharry, Crosserlough, Co. Cavan A82 C9P3",
+    addressLink:"https://www.airbnb.com/rooms/1329818994273030251?source_impression_id=p3_1786476960_P3ONYn6U1csFKT15",
     flights:[],
     details:[
       "Check out of 26 Oakley Road",
-      "Drive to County Cavan"
+      "Drive to County Cavan",
+      "Possible Irish music session with cousins tonight — TBD Fri 9/4 or Sat 9/5"
     ]},
   { date:"2026-09-05", weekday:"Sat", loc:"cavan", tag:"Cavan",
     summary:"Visit Grandpa Tom's house in Cavan",
-    address:"County Cavan — accommodation TBD",
+    address:"Leeharry, Crosserlough, Co. Cavan A82 C9P3",
+    addressLink:"https://www.airbnb.com/rooms/1329818994273030251?source_impression_id=p3_1786476960_P3ONYn6U1csFKT15",
     flights:[],
     details:[
-      "Daytime: visit to Grandpa Tom's house"
+      "Daytime: visit to Grandpa Tom's house",
+      "Possible Irish music session with cousins tonight — TBD Fri 9/4 or Sat 9/5"
     ]},
   { date:"2026-09-06", weekday:"Sun", loc:"cavan", tag:"Cavan",
     summary:"Evening with relatives in Cavan",
-    address:"County Cavan — accommodation TBD",
+    address:"Leeharry, Crosserlough, Co. Cavan A82 C9P3",
+    addressLink:"https://www.airbnb.com/rooms/1329818994273030251?source_impression_id=p3_1786476960_P3ONYn6U1csFKT15",
     flights:[],
     details:[
       "Evening: gathering with relatives in Cavan"
     ]},
   { date:"2026-09-07", weekday:"Mon", loc:"lahinch", tag:"Lahinch",
     summary:"Travel day — drive Cavan → Lahinch",
-    address:"Lahinch, Co. Clare — accommodation TBD",
+    address:"Moy More, Lahinch, County Clare V95 PK51, Ireland",
+    addressLink:"https://www.airbnb.com/rooms/1697387560359982691?source_impression_id=p3_1786477001_P3lKjte2mdC5rgVj",
     flights:[],
     details:[
       "Check out of Cavan accommodation",
@@ -547,7 +561,8 @@ const days = [
     ]},
   { date:"2026-09-08", weekday:"Tue", loc:"lahinch", tag:"Lahinch",
     summary:"Lahinch — activity day (TBD)",
-    address:"Lahinch, Co. Clare — accommodation TBD",
+    address:"Moy More, Lahinch, County Clare V95 PK51, Ireland",
+    addressLink:"https://www.airbnb.com/rooms/1697387560359982691?source_impression_id=p3_1786477001_P3lKjte2mdC5rgVj",
     flights:[],
     details:[
       "Ideas to consider: Cliffs of Moher hike, surf lesson on Lahinch Beach, round at Lahinch Golf Club",
@@ -555,7 +570,8 @@ const days = [
     ]},
   { date:"2026-09-09", weekday:"Wed", loc:"lahinch", tag:"Lahinch",
     summary:"Lahinch — activity day (TBD)",
-    address:"Lahinch, Co. Clare — accommodation TBD",
+    address:"Moy More, Lahinch, County Clare V95 PK51, Ireland",
+    addressLink:"https://www.airbnb.com/rooms/1697387560359982691?source_impression_id=p3_1786477001_P3lKjte2mdC5rgVj",
     flights:[],
     details:[
       "Ideas to consider: Burren hiking or cycling, Doolin day trip, Wild Atlantic Way bike route",
@@ -563,7 +579,8 @@ const days = [
     ]},
   { date:"2026-09-10", weekday:"Thu", loc:"travel", tag:"Travel",
     summary:"Maura flies home via JFK · rest of family stays in Lahinch",
-    address:"Lahinch, Co. Clare — accommodation TBD (family staying)",
+    address:"Moy More, Lahinch, County Clare V95 PK51, Ireland (family staying)",
+    addressLink:"https://www.airbnb.com/rooms/1697387560359982691?source_impression_id=p3_1786477001_P3lKjte2mdC5rgVj",
     flights:[
       { num:"EI0105", from:"DUB", to:"JFK", depart:"11:10", arrive:"13:40", people:["Maura"] }
     ],
@@ -572,7 +589,8 @@ const days = [
     ]},
   { date:"2026-09-11", weekday:"Fri", loc:"lahinch", tag:"Lahinch",
     summary:"Last day of current Lahinch booking",
-    address:"Lahinch, Co. Clare — accommodation TBD (booked through today)",
+    address:"Moy More, Lahinch, County Clare V95 PK51, Ireland (booked through today)",
+    addressLink:"https://www.airbnb.com/rooms/1697387560359982691?source_impression_id=p3_1786477001_P3lKjte2mdC5rgVj",
     flights:[],
     details:[
       "Plans for Sep 11–14 not yet set — needs a group decision (stay in Clare, head toward Dublin, etc.)"
@@ -607,11 +625,10 @@ const ROSTER = ["Maura", "Mom", "Dad", "Thomas", "Aidan", "Ryan", "Aunt Mary"];
 
 const defaultOpenItems = [
   "Aunt Mary's flight details",
-  "Cavan accommodation address",
-  "Lahinch accommodation address",
   "Lahinch activities — pick from hiking, surfing, golf, biking (see Sep 8–9 for starter ideas)",
   "What the family does Sep 11–14, between checking out of Lahinch and the Sep 15 flight home",
-  "Maura's Aug 30 free day in London"
+  "Maura's Aug 30 free day in London",
+  "Confirm which night for the Irish music session in Cavan — Fri 9/4 or Sat 9/5"
 ];
 let openItems = defaultOpenItems.slice();
 
@@ -736,7 +753,10 @@ function renderView(day) {
   const modal = document.getElementById('modal');
   const d = new Date(day.date + "T00:00:00");
   const fullDate = d.toLocaleString('en-US',{ weekday:'long', month:'long', day:'numeric' });
-  const addressHtml = day.address ? `<div class="modal-address">Accommodation: ${escapeHtml(day.address)}</div>` : '';
+  const addressText = day.addressLink
+    ? `<a href="${escapeHtml(day.addressLink)}" target="_blank" rel="noopener noreferrer">${escapeHtml(day.address)} ↗</a>`
+    : escapeHtml(day.address);
+  const addressHtml = day.address ? `<div class="modal-address">Accommodation: ${addressText}</div>` : '';
   const flightsHtml = (day.flights && day.flights.length)
     ? `<div class="modal-flights">${day.flights.map(flightChipHtml).join('')}</div>`
     : '';
@@ -799,6 +819,8 @@ function renderEdit(dateStr) {
     <input type="text" id="edit-summary" value="${escapeHtml(day.summary)}">
     <label for="edit-address">Accommodation (address)</label>
     <input type="text" id="edit-address" placeholder="e.g. 26 Oakley Road, Dublin 6" value="${escapeHtml(day.address || '')}">
+    <label for="edit-address-link">Accommodation link (optional)</label>
+    <input type="text" id="edit-address-link" placeholder="https://www.airbnb.com/rooms/..." value="${escapeHtml(day.addressLink || '')}">
     <label>Flights</label>
     <div id="flights-editor"></div>
     <button type="button" class="add-flight-btn" onclick="addFlightRow()">+ Add flight</button>
@@ -828,6 +850,7 @@ function saveEdit(dateStr) {
     tag: CATEGORY_LABELS[loc],
     summary: document.getElementById('edit-summary').value.trim(),
     address: document.getElementById('edit-address').value.trim(),
+    addressLink: document.getElementById('edit-address-link').value.trim(),
     flights,
     details: document.getElementById('edit-details').value.split('\n').map(s => s.trim()).filter(Boolean)
   };
@@ -879,7 +902,7 @@ function buildPrintView() {
   days.forEach(day => {
     const d = new Date(day.date + "T00:00:00");
     const fullDate = d.toLocaleString('en-US',{ weekday:'long', month:'long', day:'numeric' });
-    const addressLine = day.address ? `<div class="pd-meta">Accommodation: ${escapeHtml(day.address)}</div>` : '';
+    const addressLine = day.address ? `<div class="pd-meta">Accommodation: ${escapeHtml(day.address)}${day.addressLink ? ' — ' + escapeHtml(day.addressLink) : ''}</div>` : '';
     const flightLines = (day.flights && day.flights.length)
       ? `<ul class="pd-flights">${day.flights.map(f => `<li>${escapeHtml(f.num)}: ${escapeHtml(f.from)} → ${escapeHtml(f.to)}, ${escapeHtml(f.depart)} → ${escapeHtml(f.arrive)}${(f.people && f.people.length) ? ' — ' + escapeHtml(f.people.join(', ')) : ''}</li>`).join('')}</ul>`
       : '';
