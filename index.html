@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kelleher Family Ireland Trip — Aug 28 – Sep 15, 2026</title>
+<title>Gaffney-Kelleher Family Ireland Trip — Aug 28 – Sep 15, 2026</title>
 <style>
   :root {
     --travel: #d97706;
@@ -33,41 +33,68 @@
     margin: 0 auto 24px;
   }
   h1 { font-size: 1.6rem; margin: 0 0 4px; }
-  .subtitle { color: var(--muted); margin: 0 0 16px; font-size: 0.95rem; }
+  .subtitle { color: var(--muted); margin: 0; font-size: 0.95rem; }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
 
   .toolbar {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
-  button.print-btn {
+  .toolbar-btn {
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .toolbar-btn:hover { background: #f3f4f6; }
+  .toolbar-btn.active {
     background: var(--ink);
     color: white;
-    border: none;
-    padding: 9px 16px;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    cursor: pointer;
+    border-color: var(--ink);
   }
-  button.print-btn:hover { opacity: 0.85; }
+  .toolbar-btn.active:hover { background: var(--ink); opacity: 0.85; }
 
-  .legend {
+  .view-toggle { display: flex; gap: 6px; }
+
+  .quicklinks {
+    max-width: 1100px;
+    margin: 0 auto 16px;
     display: flex;
-    gap: 14px;
+    gap: 8px;
     flex-wrap: wrap;
-    font-size: 0.8rem;
-    color: var(--muted);
   }
-  .legend span.swatch {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 3px;
-    margin-right: 5px;
-    vertical-align: middle;
+  .quicklink-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    color: var(--dublin);
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 12px;
   }
+  .quicklink-btn:hover { background: #f3f4f6; }
 
   .open-items {
     max-width: 1100px;
@@ -175,15 +202,10 @@
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     transform: translateY(-1px);
   }
-  .day-card.travel { border-left-color: var(--travel); }
-  .day-card.dublin { border-left-color: var(--dublin); }
-  .day-card.cavan { border-left-color: var(--cavan); }
-  .day-card.lahinch { border-left-color: var(--lahinch); }
-  .day-card.open { border-left-color: var(--open); }
-
   .day-date { font-weight: 700; font-size: 0.95rem; }
   .day-weekday { font-size: 0.72rem; color: var(--muted); margin-bottom: 6px; }
-  .day-tag {
+  .tag-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
+  .tag-chip {
     display: inline-block;
     font-size: 0.65rem;
     font-weight: 600;
@@ -191,16 +213,22 @@
     letter-spacing: 0.03em;
     padding: 2px 6px;
     border-radius: 4px;
-    margin-bottom: 6px;
     width: fit-content;
   }
-  .day-card.travel .day-tag { color: var(--travel); background: var(--travel-bg); }
-  .day-card.dublin .day-tag { color: var(--dublin); background: var(--dublin-bg); }
-  .day-card.cavan .day-tag { color: var(--cavan); background: var(--cavan-bg); }
-  .day-card.lahinch .day-tag { color: var(--lahinch); background: var(--lahinch-bg); }
-  .day-card.open .day-tag { color: var(--open); background: var(--open-bg); }
+  .tag-chip.travel { color: var(--travel); background: var(--travel-bg); }
+  .tag-chip.dublin { color: var(--dublin); background: var(--dublin-bg); }
+  .tag-chip.cavan { color: var(--cavan); background: var(--cavan-bg); }
+  .tag-chip.lahinch { color: var(--lahinch); background: var(--lahinch-bg); }
+  .tag-chip.open { color: var(--open); background: var(--open-bg); }
 
-  .day-summary { font-size: 0.8rem; color: var(--ink); flex-grow: 1; }
+  .day-activities {
+    font-size: 0.78rem;
+    color: var(--ink);
+    flex-grow: 1;
+    margin: 0;
+    padding-left: 16px;
+  }
+  .day-activities li { margin-bottom: 3px; }
   .day-flights { margin-top: 6px; display: flex; flex-direction: column; gap: 3px; }
   .day-flight-line {
     font-size: 0.66rem;
@@ -211,6 +239,30 @@
     padding: 2px 6px;
     width: fit-content;
   }
+
+  .list-view {
+    display: none;
+    max-width: 700px;
+    margin: 0 auto;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .list-view.active { display: flex; }
+  .list-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--open);
+    border-radius: 8px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: box-shadow 0.15s, transform 0.15s;
+  }
+  .list-card:hover {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    transform: translateY(-1px);
+  }
+  .list-card-date { font-weight: 700; font-size: 1rem; margin-bottom: 6px; }
+  .list-card .day-activities { font-size: 0.85rem; }
 
   /* Modal */
   .overlay {
@@ -246,13 +298,19 @@
     line-height: 1;
   }
   .modal h2 { margin: 0 0 8px; font-size: 1.2rem; }
-  .modal .day-tag { margin-bottom: 12px; }
-  .modal .modal-summary {
-    font-size: 1rem;
+  .day-tag {
+    display: inline-block;
+    font-size: 0.65rem;
     font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    width: fit-content;
+    color: var(--muted);
+    background: var(--open-bg);
   }
+  .modal .day-tag, .modal .tag-chips { margin-bottom: 12px; }
   .modal .modal-address {
     font-size: 0.88rem;
     color: var(--ink);
@@ -262,8 +320,23 @@
     padding: 8px 10px;
     margin-bottom: 10px;
   }
-  .modal .modal-address a { color: var(--dublin); font-weight: 600; text-decoration: none; }
-  .modal .modal-address a:hover { text-decoration: underline; }
+  .modal-address-text { margin-bottom: 8px; }
+  .modal-address-actions { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0 14px; }
+  .address-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    color: var(--dublin);
+    background: white;
+  }
+  .address-btn:hover { background: #f3f4f6; }
+  .address-btn.airbnb { color: #e00b6f; }
   .modal .modal-flights { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
   .flight-chip {
     display: flex;
@@ -305,7 +378,7 @@
     letter-spacing: 0.02em;
     margin: 14px 0 5px;
   }
-  .modal label:first-of-type { margin-top: 8px; }
+  .modal > label:first-of-type { margin-top: 8px; }
   .modal input[type="text"], .modal select, .modal textarea {
     width: 100%;
     padding: 8px 10px;
@@ -343,7 +416,7 @@
     letter-spacing: 0.02em;
     margin-bottom: 5px;
   }
-  .flight-people-checks { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+  .flight-people-checks, .category-checks { display: flex; flex-wrap: wrap; gap: 4px 12px; }
   .person-check {
     display: flex;
     align-items: center;
@@ -393,8 +466,8 @@
 
   @media print {
     body { background: white; padding: 0; }
-    .toolbar, .overlay, .legend { display: none !important; }
-    header.page, .open-items, main.calendar { display: none !important; }
+    .toolbar, .overlay { display: none !important; }
+    header.page, .open-items, main.calendar, .quicklinks, .list-view { display: none !important; }
     #print-view {
       display: block !important;
       max-width: 100%;
@@ -418,21 +491,24 @@
 <body>
 
 <header class="page">
-  <h1>Kelleher Family Ireland Trip</h1>
-  <p class="subtitle">August 28 – September 15, 2026</p>
-  <div class="toolbar">
-    <button class="print-btn" onclick="window.print()">Print full itinerary</button>
-    <div class="legend">
-      <span><span class="swatch" style="background:var(--travel)"></span>Travel day</span>
-      <span><span class="swatch" style="background:var(--dublin)"></span>Dublin</span>
-      <span><span class="swatch" style="background:var(--cavan)"></span>Cavan</span>
-      <span><span class="swatch" style="background:var(--lahinch)"></span>Lahinch</span>
-      <span><span class="swatch" style="background:var(--open)"></span>Open / TBD</span>
+  <div class="header-top">
+    <div class="header-titles">
+      <h1>Gaffney-Kelleher Family Ireland Trip</h1>
+      <p class="subtitle">August–September 2026</p>
+    </div>
+    <div class="view-toggle">
+      <button class="toolbar-btn" id="view-cal-btn" onclick="setView('calendar')">📅 Calendar</button>
+      <button class="toolbar-btn" id="view-list-btn" onclick="setView('list')">📋 List</button>
     </div>
   </div>
+  <div class="toolbar">
+    <button class="toolbar-btn" onclick="window.print()">Print full itinerary</button>
+  </div>
+  <div class="quicklinks" id="quicklinks"></div>
 </header>
 
 <main class="calendar" id="calendar"></main>
+<div class="list-view" id="listView"></div>
 
 <div class="open-items">
   <strong>Still needs planning</strong>
@@ -453,165 +529,146 @@
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
 <script>
 const days = [
-  { date:"2026-08-28", weekday:"Fri", loc:"travel", tag:"Travel",
-    summary:"Maura flies SFO → Dublin (overnight) · rest of family still home",
+  { date:"2026-08-28", weekday:"Fri", locs:["travel"],
     address:"",
     flights:[
       { num:"EI0060", from:"SFO", to:"DUB", depart:"Fri 8/28, 17:35", arrive:"Sat 8/29, 11:45 (+1 day)", people:["Maura"] }
     ],
     details:[
-      "Rest of family still home in the Bay Area — departs Mon 8/31"
+      { text:"Rest of family still home in the Bay Area — departs Mon 8/31", place:"" }
     ]},
-  { date:"2026-08-29", weekday:"Sat", loc:"travel", tag:"Travel",
-    summary:"Maura arrives Dublin, connects onward to London · family still home",
+  { date:"2026-08-29", weekday:"Sat", locs:["travel"],
     address:"London — accommodation TBD",
     flights:[
       { num:"EI0166", from:"DUB", to:"LHR", depart:"13:30", arrive:"15:00", people:["Maura"] }
     ],
     details:[
-      "Maura arrives Dublin 11:45am (overnight EI0060)",
-      "Maura based in London through Mon 8/31",
-      "Family still home in the Bay Area"
+      { text:"Maura arrives Dublin 11:45am (overnight EI0060)", place:"" },
+      { text:"Maura based in London through Mon 8/31", place:"" },
+      { text:"Family still home in the Bay Area", place:"" }
     ]},
-  { date:"2026-08-30", weekday:"Sun", loc:"open", tag:"Open",
-    summary:"Maura's free day in London — plans TBD",
+  { date:"2026-08-30", weekday:"Sun", locs:["open"],
     address:"London — accommodation TBD",
     flights:[],
     details:[
-      "Maura: free day in London — no plans set yet",
-      "Family: last day at home before flying out tomorrow"
+      { text:"Maura: free day in London — no plans set yet", place:"" },
+      { text:"Family: last day at home before flying out tomorrow", place:"" }
     ]},
-  { date:"2026-08-31", weekday:"Mon", loc:"travel", tag:"Travel",
-    summary:"Family flies SFO → Chicago → overnight to Dublin · Maura's last day in London",
+  { date:"2026-08-31", weekday:"Mon", locs:["travel"],
     address:"",
     flights:[
       { num:"UA2317", from:"SFO", to:"ORD", depart:"12:00pm", arrive:"6:32pm", people:["Mom","Dad","Thomas","Aidan","Ryan"] },
       { num:"UA980", from:"ORD", to:"DUB", depart:"8:20pm", arrive:"Tue 9/1, 9:45am", people:["Mom","Dad","Thomas","Aidan","Ryan"] }
     ],
     details:[
-      "Maura: last day in London — flies to Dublin tomorrow morning"
+      { text:"Maura: last day in London — flies to Dublin tomorrow morning", place:"" }
     ]},
-  { date:"2026-09-01", weekday:"Tue", loc:"dublin", tag:"Dublin",
-    summary:"Whole group together in Dublin — check into Oakley Road",
-    address:"26 Oakley Road, Dublin 6, County Dublin D06 CK66",
+  { date:"2026-09-01", weekday:"Tue", locs:["dublin"],
+    address:"26 Oakley Rd, Ranelagh, Dublin 6, D06 CK66, Ireland",
     addressLink:"https://www.airbnb.com/rooms/563858234078624358?source_impression_id=p3_1780415995_P3-c07BnFIyuqPqR",
     flights:[
       { num:"EI0153", from:"LHR", to:"DUB", depart:"08:50", arrive:"10:15am", people:["Maura"] }
     ],
     details:[
-      "Family arrives Dublin Airport 9:45am (overnight UA980)",
-      "Aunt Mary joins the group — flight details TBD",
-      "5:30pm: drinks at BAR 1661",
-      "7:30pm: dinner at Little Dumpling"
+      { text:"Family arrives Dublin Airport 9:45am (overnight UA980)", place:"" },
+      { text:"Aunt Mary joins the group — flight details TBD", place:"" },
+      { text:"5:30pm: drinks at BAR 1661", place:"Bar 1661 Dublin" },
+      { text:"7:30pm: dinner at Little Dumpling", place:"Little Dumpling Dublin" }
     ]},
-  { date:"2026-09-02", weekday:"Wed", loc:"dublin", tag:"Dublin",
-    summary:"Dublin sightseeing · dinner with relatives tonight",
-    address:"26 Oakley Road, Dublin 6, County Dublin D06 CK66",
+  { date:"2026-09-02", weekday:"Wed", locs:["dublin"],
+    address:"26 Oakley Rd, Ranelagh, Dublin 6, D06 CK66, Ireland",
     addressLink:"https://www.airbnb.com/rooms/563858234078624358?source_impression_id=p3_1780415995_P3-c07BnFIyuqPqR",
     flights:[],
     details:[
-      "Daytime free in Dublin",
-      "Evening: dinner with relatives in Dublin"
+      { text:"Daytime free in Dublin", place:"" },
+      { text:"Evening: dinner with relatives in Dublin", place:"" }
     ]},
-  { date:"2026-09-03", weekday:"Thu", loc:"dublin", tag:"Dublin",
-    summary:"Dublin — free day",
-    address:"26 Oakley Road, Dublin 6, County Dublin D06 CK66",
+  { date:"2026-09-03", weekday:"Thu", locs:["dublin"],
+    address:"26 Oakley Rd, Ranelagh, Dublin 6, D06 CK66, Ireland",
     addressLink:"https://www.airbnb.com/rooms/563858234078624358?source_impression_id=p3_1780415995_P3-c07BnFIyuqPqR",
     flights:[],
     details:[
-      "Free day / sightseeing — plans TBD",
-      "8:30pm: dinner at Lotties with the rest of the cousins in Dublin",
-      "Last night at Oakley Road"
+      { text:"Free day / sightseeing — plans TBD", place:"" },
+      { text:"8:30pm: dinner at Lotties with the rest of the cousins in Dublin", place:"Lotties Dublin" },
+      { text:"Last night at Oakley Road", place:"" }
     ]},
-  { date:"2026-09-04", weekday:"Fri", loc:"cavan", tag:"Cavan",
-    summary:"Travel day — drive Dublin → County Cavan",
-    address:"Leeharry, Crosserlough, Co. Cavan A82 C9P3",
+  { date:"2026-09-04", weekday:"Fri", locs:["cavan"],
+    address:"Lecharry, Co. Cavan, A82 C9P3, Ireland",
     addressLink:"https://www.airbnb.com/rooms/1329818994273030251?source_impression_id=p3_1786476960_P3ONYn6U1csFKT15",
     flights:[],
     details:[
-      "Check out of 26 Oakley Road",
-      "Drive to County Cavan",
-      "Possible Irish music session with cousins tonight — TBD Fri 9/4 or Sat 9/5"
+      { text:"Check out of 26 Oakley Road", place:"" },
+      { text:"Drive to County Cavan", place:"" },
+      { text:"Possible Irish music session with cousins tonight — TBD Fri 9/4 or Sat 9/5", place:"" }
     ]},
-  { date:"2026-09-05", weekday:"Sat", loc:"cavan", tag:"Cavan",
-    summary:"Visit Grandpa Tom's house in Cavan",
-    address:"Leeharry, Crosserlough, Co. Cavan A82 C9P3",
+  { date:"2026-09-05", weekday:"Sat", locs:["cavan"],
+    address:"Lecharry, Co. Cavan, A82 C9P3, Ireland",
     addressLink:"https://www.airbnb.com/rooms/1329818994273030251?source_impression_id=p3_1786476960_P3ONYn6U1csFKT15",
     flights:[],
     details:[
-      "Daytime: visit to Grandpa Tom's house",
-      "Possible Irish music session with cousins tonight — TBD Fri 9/4 or Sat 9/5"
+      { text:"Daytime: visit to Grandpa Tom's house", place:"" },
+      { text:"Possible Irish music session with cousins tonight — TBD Fri 9/4 or Sat 9/5", place:"" }
     ]},
-  { date:"2026-09-06", weekday:"Sun", loc:"cavan", tag:"Cavan",
-    summary:"Evening with relatives in Cavan",
-    address:"Leeharry, Crosserlough, Co. Cavan A82 C9P3",
+  { date:"2026-09-06", weekday:"Sun", locs:["cavan"],
+    address:"Lecharry, Co. Cavan, A82 C9P3, Ireland",
     addressLink:"https://www.airbnb.com/rooms/1329818994273030251?source_impression_id=p3_1786476960_P3ONYn6U1csFKT15",
     flights:[],
     details:[
-      "Evening: gathering with relatives in Cavan"
+      { text:"Evening: gathering with relatives in Cavan", place:"" }
     ]},
-  { date:"2026-09-07", weekday:"Mon", loc:"lahinch", tag:"Lahinch",
-    summary:"Travel day — drive Cavan → Lahinch",
-    address:"Moy More, Lahinch, County Clare V95 PK51, Ireland",
+  { date:"2026-09-07", weekday:"Mon", locs:["lahinch"],
+    address:"Moy More, Co. Clare, V95 PK51, Ireland",
     addressLink:"https://www.airbnb.com/rooms/1697387560359982691?source_impression_id=p3_1786477001_P3lKjte2mdC5rgVj",
     flights:[],
     details:[
-      "Check out of Cavan accommodation",
-      "Drive to Lahinch, Co. Clare"
+      { text:"Check out of Cavan accommodation", place:"" },
+      { text:"Drive to Lahinch, Co. Clare", place:"" }
     ]},
-  { date:"2026-09-08", weekday:"Tue", loc:"lahinch", tag:"Lahinch",
-    summary:"Lahinch — activity day (TBD)",
-    address:"Moy More, Lahinch, County Clare V95 PK51, Ireland",
+  { date:"2026-09-08", weekday:"Tue", locs:["lahinch"],
+    address:"Moy More, Co. Clare, V95 PK51, Ireland",
     addressLink:"https://www.airbnb.com/rooms/1697387560359982691?source_impression_id=p3_1786477001_P3lKjte2mdC5rgVj",
     flights:[],
     details:[
-      "Ideas to consider: Cliffs of Moher hike, surf lesson on Lahinch Beach, round at Lahinch Golf Club",
-      "Group to decide and firm up plan"
+      { text:"Ideas to consider: Cliffs of Moher hike, surf lesson on Lahinch Beach, round at Lahinch Golf Club", place:"" },
+      { text:"Group to decide and firm up plan", place:"" }
     ]},
-  { date:"2026-09-09", weekday:"Wed", loc:"lahinch", tag:"Lahinch",
-    summary:"Lahinch — activity day (TBD)",
-    address:"Moy More, Lahinch, County Clare V95 PK51, Ireland",
+  { date:"2026-09-09", weekday:"Wed", locs:["lahinch"],
+    address:"Moy More, Co. Clare, V95 PK51, Ireland",
     addressLink:"https://www.airbnb.com/rooms/1697387560359982691?source_impression_id=p3_1786477001_P3lKjte2mdC5rgVj",
     flights:[],
     details:[
-      "Ideas to consider: Burren hiking or cycling, Doolin day trip, Wild Atlantic Way bike route",
-      "Group to decide and firm up plan"
+      { text:"Ideas to consider: Burren hiking or cycling, Doolin day trip, Wild Atlantic Way bike route", place:"" },
+      { text:"Group to decide and firm up plan", place:"" }
     ]},
-  { date:"2026-09-10", weekday:"Thu", loc:"travel", tag:"Travel",
-    summary:"Maura flies home via JFK · rest of family stays in Lahinch",
-    address:"Moy More, Lahinch, County Clare V95 PK51, Ireland (family staying)",
+  { date:"2026-09-10", weekday:"Thu", locs:["travel","lahinch"],
+    address:"Moy More, Co. Clare, V95 PK51, Ireland (family staying)",
     addressLink:"https://www.airbnb.com/rooms/1697387560359982691?source_impression_id=p3_1786477001_P3lKjte2mdC5rgVj",
     flights:[
       { num:"EI0105", from:"DUB", to:"JFK", depart:"11:10", arrive:"13:40", people:["Maura"] }
     ],
     details:[
-      "Morning: drive Lahinch → Dublin Airport (~3 hrs — build in a buffer)"
+      { text:"Morning: drive Lahinch → Dublin Airport (~3 hrs — build in a buffer)", place:"" }
     ]},
-  { date:"2026-09-11", weekday:"Fri", loc:"lahinch", tag:"Lahinch",
-    summary:"Last day of current Lahinch booking",
-    address:"Moy More, Lahinch, County Clare V95 PK51, Ireland (booked through today)",
+  { date:"2026-09-11", weekday:"Fri", locs:["lahinch"],
+    address:"Moy More, Co. Clare, V95 PK51, Ireland (booked through today)",
     addressLink:"https://www.airbnb.com/rooms/1697387560359982691?source_impression_id=p3_1786477001_P3lKjte2mdC5rgVj",
     flights:[],
     details:[
-      "Plans for Sep 11–14 not yet set — needs a group decision (stay in Clare, head toward Dublin, etc.)"
+      { text:"Plans for Sep 11–14 not yet set — needs a group decision (stay in Clare, head toward Dublin, etc.)", place:"" }
     ]},
-  { date:"2026-09-12", weekday:"Sat", loc:"open", tag:"Open",
-    summary:"No plans yet",
+  { date:"2026-09-12", weekday:"Sat", locs:["open"],
     address:"",
     flights:[],
-    details:["Location and activity TBD"]},
-  { date:"2026-09-13", weekday:"Sun", loc:"open", tag:"Open",
-    summary:"No plans yet",
+    details:[{ text:"Location and activity TBD", place:"" }]},
+  { date:"2026-09-13", weekday:"Sun", locs:["open"],
     address:"",
     flights:[],
-    details:["Location and activity TBD"]},
-  { date:"2026-09-14", weekday:"Mon", loc:"open", tag:"Open",
-    summary:"No plans yet",
+    details:[{ text:"Location and activity TBD", place:"" }]},
+  { date:"2026-09-14", weekday:"Mon", locs:["open"],
     address:"",
     flights:[],
-    details:["Location and activity TBD — consider positioning near Dublin for tomorrow's flight"]},
-  { date:"2026-09-15", weekday:"Tue", loc:"travel", tag:"Travel",
-    summary:"Family flies Dublin → Chicago → SFO",
+    details:[{ text:"Location and activity TBD — consider positioning near Dublin for tomorrow's flight", place:"" }]},
+  { date:"2026-09-15", weekday:"Tue", locs:["travel"],
     address:"",
     flights:[
       { num:"UA981", from:"DUB", to:"ORD", depart:"11:35am", arrive:"1:40pm", people:["Mom","Dad","Thomas","Aidan","Ryan"] },
@@ -621,7 +678,46 @@ const days = [
 ];
 
 const CATEGORY_LABELS = { travel:'Travel', dublin:'Dublin', cavan:'Cavan', lahinch:'Lahinch', open:'Open' };
+const CATEGORY_ORDER = ["travel", "dublin", "cavan", "lahinch", "open"];
 const ROSTER = ["Maura", "Mom", "Dad", "Thomas", "Aidan", "Ryan", "Aunt Mary"];
+
+const CUSTOM_CATEGORY_PALETTE = ["#db2777", "#0891b2", "#65a30d", "#ea580c", "#4f46e5", "#0d9488", "#c026d3"];
+let customCategories = [];
+function colorForLoc(loc) {
+  if (CATEGORY_LABELS[loc]) return `var(--${loc})`;
+  const custom = customCategories.find(c => c.key === loc);
+  return custom ? custom.color : '#6b7280';
+}
+function labelForLoc(loc) {
+  if (CATEGORY_LABELS[loc]) return CATEGORY_LABELS[loc];
+  const custom = customCategories.find(c => c.key === loc);
+  return custom ? custom.label : loc;
+}
+function allCategoryKeys() {
+  return CATEGORY_ORDER.concat(customCategories.map(c => c.key));
+}
+function categoryCheckboxesHtml(checkedLocs) {
+  return allCategoryKeys().map(cat => `
+    <label class="person-check">
+      <input type="checkbox" class="edit-cat" value="${cat}" ${checkedLocs.includes(cat) ? 'checked' : ''}>
+      ${escapeHtml(labelForLoc(cat))}
+    </label>`).join('');
+}
+function saveCustomCategories() {
+  if (firebaseReady) customCategoriesRef.set(customCategories);
+}
+function addCustomCategory() {
+  const input = document.getElementById('new-category-name');
+  const name = input.value.trim();
+  if (!name) return;
+  const key = 'c_' + name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 24) + '_' + Date.now().toString(36).slice(-4);
+  const color = CUSTOM_CATEGORY_PALETTE[customCategories.length % CUSTOM_CATEGORY_PALETTE.length];
+  const checked = Array.from(document.querySelectorAll('.edit-cat:checked')).map(cb => cb.value);
+  customCategories.push({ key, label: name, color });
+  saveCustomCategories();
+  input.value = '';
+  document.getElementById('category-checks').innerHTML = categoryCheckboxesHtml(checked.concat([key]));
+}
 
 const defaultOpenItems = [
   "Aunt Mary's flight details",
@@ -642,26 +738,74 @@ const FIREBASE_CONFIG = {
   appId: "1:707788330062:web:7f6aa07759ba9036e89f1f"
 };
 
+function normalizeDay(day) {
+  // Back-compat: earlier saved data (local or in the shared database) used a
+  // single `loc`/`tag` pair instead of a `locs` array.
+  if (!day.locs || !day.locs.length) {
+    day.locs = day.loc ? [day.loc] : ['open'];
+  }
+}
+
 const defaultByDate = {};
 days.forEach(d => { defaultByDate[d.date] = JSON.parse(JSON.stringify(d)); });
 
 const dayMap = {};
-days.forEach(d => dayMap[d.date] = d);
+days.forEach(d => { normalizeDay(d); dayMap[d.date] = d; });
 
 let overridesRef = null;
 let openItemsRef = null;
+let customCategoriesRef = null;
 let firebaseReady = false;
 
 function applyOverrides(overrides) {
   days.forEach(d => {
     const base = JSON.parse(JSON.stringify(defaultByDate[d.date]));
     Object.assign(d, base, (overrides && overrides[d.date]) || {});
+    normalizeDay(d);
   });
 }
 
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function normalizeDetail(item) {
+  if (typeof item === 'string') return { text: item, place: '' };
+  return { text: item.text || '', place: item.place || '' };
+}
+function activityListHtml(details) {
+  if (!details || !details.length) return '';
+  const items = details.map(item => `<li>${escapeHtml(normalizeDetail(item).text)}</li>`).join('');
+  return `<ul class="day-activities">${items}</ul>`;
+}
+function hexToRgba(hex, alpha) {
+  const h = hex.replace('#', '');
+  const r = parseInt(h.substring(0,2), 16), g = parseInt(h.substring(2,4), 16), b = parseInt(h.substring(4,6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+function categoryChipsHtml(locs) {
+  return `<div class="tag-chips">${locs.map(loc => {
+    if (CATEGORY_LABELS[loc]) {
+      return `<span class="tag-chip ${loc}">${escapeHtml(CATEGORY_LABELS[loc])}</span>`;
+    }
+    const color = colorForLoc(loc);
+    return `<span class="tag-chip" style="color:${color};background:${hexToRgba(color, 0.12)};">${escapeHtml(labelForLoc(loc))}</span>`;
+  }).join('')}</div>`;
+}
+function applySplitBorder(card, locs) {
+  card.style.borderLeftWidth = '4px';
+  card.style.borderLeftStyle = 'solid';
+  if (locs.length === 1) {
+    card.style.borderLeftColor = colorForLoc(locs[0]);
+    return;
+  }
+  const stops = locs.map((loc, i) => {
+    const start = Math.round((i / locs.length) * 100);
+    const end = Math.round(((i + 1) / locs.length) * 100);
+    const color = colorForLoc(loc);
+    return `${color} ${start}%, ${color} ${end}%`;
+  }).join(', ');
+  card.style.borderImage = `linear-gradient(to bottom, ${stops}) 1`;
 }
 function isoDate(d) {
   const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), da = String(d.getDate()).padStart(2,'0');
@@ -712,15 +856,16 @@ function buildCalendar() {
       const day = dayMap[isoDate(d)];
       const card = document.createElement('div');
       if (day) {
-        card.className = `day-card ${day.loc}`;
+        card.className = 'day-card';
+        applySplitBorder(card, day.locs);
         card.onclick = () => openModal(day);
         const flightsBoxHtml = (day.flights && day.flights.length)
           ? `<div class="day-flights">${day.flights.map(f => `<div class="day-flight-line">✈ ${escapeHtml(f.num)} ${escapeHtml(f.from)}→${escapeHtml(f.to)}</div>`).join('')}</div>`
           : '';
         card.innerHTML = `
           <div class="day-date">${fmtShort(d)}</div>
-          <div class="day-tag">${escapeHtml(day.tag)}</div>
-          <div class="day-summary">${escapeHtml(day.summary)}</div>
+          ${categoryChipsHtml(day.locs)}
+          ${activityListHtml(day.details)}
           ${flightsBoxHtml}
         `;
       } else {
@@ -732,6 +877,69 @@ function buildCalendar() {
     block.appendChild(grid);
     cal.appendChild(block);
   });
+}
+
+function buildListView() {
+  const container = document.getElementById('listView');
+  container.innerHTML = '';
+  days.forEach(day => {
+    const d = new Date(day.date + "T00:00:00");
+    const fullDate = d.toLocaleString('en-US', { weekday:'long', month:'long', day:'numeric' });
+    const flightsBoxHtml = (day.flights && day.flights.length)
+      ? `<div class="day-flights">${day.flights.map(f => `<div class="day-flight-line">✈ ${escapeHtml(f.num)} ${escapeHtml(f.from)}→${escapeHtml(f.to)}</div>`).join('')}</div>`
+      : '';
+    const card = document.createElement('div');
+    card.className = 'list-card';
+    applySplitBorder(card, day.locs);
+    card.onclick = () => openModal(day);
+    card.innerHTML = `
+      <div class="list-card-date">${fullDate}</div>
+      ${categoryChipsHtml(day.locs)}
+      ${activityListHtml(day.details)}
+      ${flightsBoxHtml}
+    `;
+    container.appendChild(card);
+  });
+}
+
+const QUICKLINK_STOPS = [
+  { label: "Dublin", date: "2026-09-01" },
+  { label: "Cavan", date: "2026-09-04" },
+  { label: "Lahinch", date: "2026-09-07" }
+];
+function buildQuickLinks() {
+  const container = document.getElementById('quicklinks');
+  container.innerHTML = QUICKLINK_STOPS.map((stop, i) => {
+    const day = dayMap[stop.date];
+    if (!day || !day.address) return '';
+    return `<button type="button" class="quicklink-btn" onclick="openLodgingModal(${i})">🏠 ${escapeHtml(stop.label)} Lodging</button>`;
+  }).join('');
+}
+function openLodgingModal(stopIndex) {
+  const stop = QUICKLINK_STOPS[stopIndex];
+  const day = dayMap[stop.date];
+  const modal = document.getElementById('modal');
+  const addressText = escapeHtml(day.address || 'Address TBD');
+  modal.innerHTML = `
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div class="day-tag">Lodging</div>
+    <h2>${escapeHtml(stop.label)}</h2>
+    <div class="modal-address">
+      <div class="modal-address-text">${addressText}</div>
+    </div>
+    ${day.addressLink ? `<div class="modal-address-actions"><a class="address-btn airbnb" href="${escapeHtml(day.addressLink)}" target="_blank" rel="noopener noreferrer">🏠 Airbnb</a></div>` : ''}
+  `;
+  document.getElementById('overlay').classList.add('active');
+}
+
+const VIEW_MODE_KEY = 'irelandTrip.viewMode';
+function setView(mode) {
+  const isCalendar = mode === 'calendar';
+  document.getElementById('calendar').style.display = isCalendar ? '' : 'none';
+  document.getElementById('listView').classList.toggle('active', !isCalendar);
+  document.getElementById('view-cal-btn').classList.toggle('active', isCalendar);
+  document.getElementById('view-list-btn').classList.toggle('active', !isCalendar);
+  try { localStorage.setItem(VIEW_MODE_KEY, mode); } catch (e) {}
 }
 
 function openModal(day) {
@@ -753,22 +961,27 @@ function renderView(day) {
   const modal = document.getElementById('modal');
   const d = new Date(day.date + "T00:00:00");
   const fullDate = d.toLocaleString('en-US',{ weekday:'long', month:'long', day:'numeric' });
-  const addressText = day.addressLink
-    ? `<a href="${escapeHtml(day.addressLink)}" target="_blank" rel="noopener noreferrer">${escapeHtml(day.address)} ↗</a>`
-    : escapeHtml(day.address);
-  const addressHtml = day.address ? `<div class="modal-address">Accommodation: ${addressText}</div>` : '';
+  const addressHtml = day.address ? `
+    <div class="modal-address">
+      <div class="modal-address-text">Accommodation: ${escapeHtml(day.address)}</div>
+    </div>
+    ${day.addressLink ? `<div class="modal-address-actions"><a class="address-btn airbnb" href="${escapeHtml(day.addressLink)}" target="_blank" rel="noopener noreferrer">🏠 Airbnb</a></div>` : ''}` : '';
   const flightsHtml = (day.flights && day.flights.length)
     ? `<div class="modal-flights">${day.flights.map(flightChipHtml).join('')}</div>`
     : '';
+  const detailsHtml = day.details.map(item => {
+    const n = normalizeDetail(item);
+    const placeText = n.place ? ` (${escapeHtml(n.place)})` : '';
+    return `<li>${escapeHtml(n.text)}${placeText}</li>`;
+  }).join('');
   modal.innerHTML = `
     <button class="modal-close" onclick="closeModal()">&times;</button>
-    <div class="day-tag">${escapeHtml(day.tag)}</div>
+    ${categoryChipsHtml(day.locs)}
     <h2>${fullDate}</h2>
-    <div class="modal-summary">${escapeHtml(day.summary)}</div>
     ${addressHtml}
     ${flightsHtml}
     <ul class="detail-list">
-      ${day.details.map(x => `<li>${escapeHtml(x)}</li>`).join('')}
+      ${detailsHtml}
     </ul>
     <button class="edit-btn" onclick="renderEdit('${day.date}')">Edit day</button>
   `;
@@ -804,19 +1017,16 @@ function renderEdit(dateStr) {
   const modal = document.getElementById('modal');
   const d = new Date(day.date + "T00:00:00");
   const fullDate = d.toLocaleString('en-US',{ weekday:'long', month:'long', day:'numeric' });
+  const notesText = (day.details || []).map(item => normalizeDetail(item).text).join('\n');
   modal.innerHTML = `
     <button class="modal-close" onclick="closeModal()">&times;</button>
     <h2>Edit ${fullDate}</h2>
-    <label for="edit-cat">Category</label>
-    <select id="edit-cat">
-      <option value="travel">Travel</option>
-      <option value="dublin">Dublin</option>
-      <option value="cavan">Cavan</option>
-      <option value="lahinch">Lahinch</option>
-      <option value="open">Open</option>
-    </select>
-    <label for="edit-summary">Summary (shown on the calendar box)</label>
-    <input type="text" id="edit-summary" value="${escapeHtml(day.summary)}">
+    <label>Category</label>
+    <div class="category-checks" id="category-checks">${categoryCheckboxesHtml(day.locs)}</div>
+    <div class="add-item-row">
+      <input type="text" id="new-category-name" placeholder="Add a category..." onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomCategory();}">
+      <button type="button" onclick="addCustomCategory()">Add</button>
+    </div>
     <label for="edit-address">Accommodation (address)</label>
     <input type="text" id="edit-address" placeholder="e.g. 26 Oakley Road, Dublin 6" value="${escapeHtml(day.address || '')}">
     <label for="edit-address-link">Accommodation link (optional)</label>
@@ -825,18 +1035,18 @@ function renderEdit(dateStr) {
     <div id="flights-editor"></div>
     <button type="button" class="add-flight-btn" onclick="addFlightRow()">+ Add flight</button>
     <label for="edit-details">Notes (one per line)</label>
-    <textarea id="edit-details" rows="5">${escapeHtml(day.details.join('\n'))}</textarea>
+    <textarea id="edit-details" rows="6">${escapeHtml(notesText)}</textarea>
     <div class="edit-actions">
       <button onclick="cancelEdit('${dateStr}')">Cancel</button>
       <button class="save-btn" onclick="saveEdit('${dateStr}')">Save</button>
     </div>
   `;
-  document.getElementById('edit-cat').value = day.loc;
   (day.flights || []).forEach(f => addFlightRow(f));
 }
 function saveEdit(dateStr) {
   const day = dayMap[dateStr];
-  const loc = document.getElementById('edit-cat').value;
+  const checkedLocs = Array.from(document.querySelectorAll('.edit-cat:checked')).map(cb => cb.value);
+  const locs = checkedLocs.length ? checkedLocs : ['open'];
   const flights = Array.from(document.querySelectorAll('#flights-editor .flight-row')).map(row => ({
     num: row.querySelector('.flight-num').value.trim(),
     from: row.querySelector('.flight-from').value.trim(),
@@ -845,18 +1055,21 @@ function saveEdit(dateStr) {
     arrive: row.querySelector('.flight-arrive').value.trim(),
     people: Array.from(row.querySelectorAll('.person-check input:checked')).map(cb => cb.value)
   })).filter(f => f.num || f.from || f.to || f.depart || f.arrive || f.people.length);
+  const details = document.getElementById('edit-details').value.split('\n')
+    .map(s => s.trim()).filter(Boolean)
+    .map(text => ({ text, place: '' }));
   const updated = {
-    loc,
-    tag: CATEGORY_LABELS[loc],
-    summary: document.getElementById('edit-summary').value.trim(),
+    locs,
     address: document.getElementById('edit-address').value.trim(),
     addressLink: document.getElementById('edit-address-link').value.trim(),
     flights,
-    details: document.getElementById('edit-details').value.split('\n').map(s => s.trim()).filter(Boolean)
+    details
   };
   Object.assign(day, updated);
   if (firebaseReady) overridesRef.child(dateStr).set(updated);
   buildCalendar();
+  buildListView();
+  buildQuickLinks();
   buildPrintView();
   renderView(day);
 }
@@ -897,31 +1110,44 @@ function addOpenItem() {
 
 function buildPrintView() {
   const pv = document.getElementById('print-view');
-  let html = `<h1>Kelleher Family Ireland Trip — Aug 28 – Sep 15, 2026</h1>
+  let html = `<h1>Gaffney-Kelleher Family Ireland Trip — Aug 28 – Sep 15, 2026</h1>
     <p style="color:#555;font-size:0.85rem;">Who's going: Maura, Mom, Dad, Thomas, Aidan, Ryan, Aunt Mary</p>`;
   days.forEach(day => {
     const d = new Date(day.date + "T00:00:00");
     const fullDate = d.toLocaleString('en-US',{ weekday:'long', month:'long', day:'numeric' });
-    const addressLine = day.address ? `<div class="pd-meta">Accommodation: ${escapeHtml(day.address)}${day.addressLink ? ' — ' + escapeHtml(day.addressLink) : ''}</div>` : '';
+    const addressLine = day.address
+      ? `<div class="pd-meta">Accommodation: ${escapeHtml(day.address)}${day.addressLink ? ' (Airbnb: ' + escapeHtml(day.addressLink) + ')' : ''}</div>`
+      : '';
     const flightLines = (day.flights && day.flights.length)
       ? `<ul class="pd-flights">${day.flights.map(f => `<li>${escapeHtml(f.num)}: ${escapeHtml(f.from)} → ${escapeHtml(f.to)}, ${escapeHtml(f.depart)} → ${escapeHtml(f.arrive)}${(f.people && f.people.length) ? ' — ' + escapeHtml(f.people.join(', ')) : ''}</li>`).join('')}</ul>`
       : '';
+    const detailLines = day.details.map(item => {
+      const n = normalizeDetail(item);
+      return `<li>${escapeHtml(n.text)}${n.place ? ' (' + escapeHtml(n.place) + ')' : ''}</li>`;
+    }).join('');
+    const tagText = day.locs.map(loc => CATEGORY_LABELS[loc] || loc).join(' & ');
     html += `<div class="print-day">
-      <h3>${fullDate} — ${escapeHtml(day.tag)}</h3>
+      <h3>${fullDate} — ${escapeHtml(tagText)}</h3>
       ${addressLine}
       ${flightLines}
-      <ul>${day.details.map(x => `<li>${escapeHtml(x)}</li>`).join('')}</ul>
+      <ul>${detailLines}</ul>
     </div>`;
   });
   pv.innerHTML = html;
 }
 
 function initSync() {
+  let savedView = 'calendar';
+  try { savedView = localStorage.getItem(VIEW_MODE_KEY) || 'calendar'; } catch (e) {}
+
   if (FIREBASE_CONFIG.apiKey === "YOUR_API_KEY") {
     console.warn('Firebase sync not configured — running locally only. Fill in FIREBASE_CONFIG to enable shared editing.');
     buildCalendar();
+    buildListView();
+    buildQuickLinks();
     buildPrintView();
     buildOpenItems();
+    setView(savedView);
     return;
   }
 
@@ -929,18 +1155,29 @@ function initSync() {
   const db = firebase.database();
   overridesRef = db.ref('trip/dayOverrides');
   openItemsRef = db.ref('trip/openItems');
+  customCategoriesRef = db.ref('trip/customCategories');
   firebaseReady = true;
 
   overridesRef.on('value', snapshot => {
     applyOverrides(snapshot.val() || {});
     buildCalendar();
+    buildListView();
+    buildQuickLinks();
     buildPrintView();
+    setView(savedView);
   });
 
   openItemsRef.on('value', snapshot => {
     const val = snapshot.val();
     openItems = Array.isArray(val) ? val : defaultOpenItems.slice();
     buildOpenItems();
+  });
+
+  customCategoriesRef.on('value', snapshot => {
+    const val = snapshot.val();
+    customCategories = Array.isArray(val) ? val : [];
+    buildCalendar();
+    buildListView();
   });
 }
 
