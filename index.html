@@ -915,7 +915,9 @@ function buildListView() {
 const QUICKLINK_STOPS = [
   { label: "Dublin", date: "2026-09-01" },
   { label: "Cavan", date: "2026-09-04" },
-  { label: "Lahinch", date: "2026-09-07" }
+  { label: "Lahinch", date: "2026-09-07" },
+  { label: "Cromane", date: "2026-09-12" },
+  { label: "Dublin Airport", date: "2026-09-14" }
 ];
 function buildQuickLinks() {
   const container = document.getElementById('quicklinks');
@@ -937,7 +939,7 @@ function openLodgingModal(stopIndex) {
     <div class="modal-address">
       <div class="modal-address-text">${addressText}</div>
     </div>
-    ${day.addressLink ? `<div class="modal-address-actions"><a class="address-btn airbnb" href="${escapeHtml(day.addressLink)}" target="_blank" rel="noopener noreferrer">🏠 Airbnb</a></div>` : ''}
+    ${day.addressLink ? `<div class="modal-address-actions"><a class="address-btn airbnb" href="${escapeHtml(day.addressLink)}" target="_blank" rel="noopener noreferrer">🔗 Booking Link</a></div>` : ''}
   `;
   document.getElementById('overlay').classList.add('active');
 }
@@ -975,7 +977,7 @@ function renderView(day) {
     <div class="modal-address">
       <div class="modal-address-text">Accommodation: ${escapeHtml(day.address)}</div>
     </div>
-    ${day.addressLink ? `<div class="modal-address-actions"><a class="address-btn airbnb" href="${escapeHtml(day.addressLink)}" target="_blank" rel="noopener noreferrer">🏠 Airbnb</a></div>` : ''}` : '';
+    ${day.addressLink ? `<div class="modal-address-actions"><a class="address-btn airbnb" href="${escapeHtml(day.addressLink)}" target="_blank" rel="noopener noreferrer">🔗 Booking Link</a></div>` : ''}` : '';
   const flightsHtml = (day.flights && day.flights.length)
     ? `<div class="modal-flights">${day.flights.map(flightChipHtml).join('')}</div>`
     : '';
@@ -1040,7 +1042,7 @@ function renderEdit(dateStr) {
     <label for="edit-address">Accommodation (address)</label>
     <input type="text" id="edit-address" placeholder="e.g. 26 Oakley Road, Dublin 6" value="${escapeHtml(day.address || '')}">
     <label for="edit-address-link">Accommodation link (optional)</label>
-    <input type="text" id="edit-address-link" placeholder="https://www.airbnb.com/rooms/..." value="${escapeHtml(day.addressLink || '')}">
+    <input type="text" id="edit-address-link" placeholder="Airbnb, hotel booking, etc." value="${escapeHtml(day.addressLink || '')}">
     <label>Flights</label>
     <div id="flights-editor"></div>
     <button type="button" class="add-flight-btn" onclick="addFlightRow()">+ Add flight</button>
@@ -1126,7 +1128,7 @@ function buildPrintView() {
     const d = new Date(day.date + "T00:00:00");
     const fullDate = d.toLocaleString('en-US',{ weekday:'long', month:'long', day:'numeric' });
     const addressLine = day.address
-      ? `<div class="pd-meta">Accommodation: ${escapeHtml(day.address)}${day.addressLink ? ' (Airbnb: ' + escapeHtml(day.addressLink) + ')' : ''}</div>`
+      ? `<div class="pd-meta">Accommodation: ${escapeHtml(day.address)}${day.addressLink ? ' (Booking: ' + escapeHtml(day.addressLink) + ')' : ''}</div>`
       : '';
     const flightLines = (day.flights && day.flights.length)
       ? `<ul class="pd-flights">${day.flights.map(f => `<li>${escapeHtml(f.num)}: ${escapeHtml(f.from)} → ${escapeHtml(f.to)}, ${escapeHtml(f.depart)} → ${escapeHtml(f.arrive)}${(f.people && f.people.length) ? ' — ' + escapeHtml(f.people.join(', ')) : ''}</li>`).join('')}</ul>`
