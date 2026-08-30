@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
 <title>Gaffney-Kelleher Family Ireland Trip — Aug 28 – Sep 15, 2026</title>
 <style>
   :root {
@@ -487,9 +488,79 @@
   @media (max-width: 720px) {
     .week-grid { grid-template-columns: repeat(2, 1fr); }
   }
+
+  /* Password gate */
+  body.auth-locked header.page,
+  body.auth-locked main.calendar,
+  body.auth-locked .list-view,
+  body.auth-locked .open-items,
+  body.auth-locked #print-view { display: none !important; }
+  #auth-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: #fafafa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  #auth-gate .auth-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 26px;
+    max-width: 360px;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+  #auth-gate h1 { font-size: 1.2rem; margin: 0 0 12px; }
+  #auth-gate label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin: 12px 0 5px;
+  }
+  #auth-gate input {
+    width: 100%;
+    padding: 9px 11px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: inherit;
+  }
+  #auth-gate button {
+    margin-top: 18px;
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: white;
+    font-size: 0.9rem;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  #auth-gate button:hover { opacity: 0.88; }
+  #auth-error { color: #b91c1c; font-size: 0.85rem; margin-top: 12px; min-height: 1.1em; }
 </style>
 </head>
-<body>
+<body class="auth-locked">
+
+<div id="auth-gate">
+  <form class="auth-card" id="auth-form">
+    <h1>Gaffney-Kelleher Family Ireland Trip</h1>
+    <label for="auth-user">Username</label>
+    <input type="text" id="auth-user" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false">
+    <label for="auth-pass">Password</label>
+    <input type="password" id="auth-pass" autocomplete="current-password">
+    <button type="submit">Login</button>
+    <div id="auth-error"></div>
+  </form>
+</div>
 
 <header class="page">
   <div class="header-top">
@@ -527,6 +598,63 @@
 
 <div id="print-view"></div>
 
+<script>
+// --- Password gate (client-side deterrent) -----------------------------------
+const AUTH_KEY = 'irelandTrip.auth';
+// SHA-256 of "trip-details:KellGaff26-T"
+const AUTH_HASH = '7d5be86b39ecddd1fcad2ee440bccff42200d6644a15de74e55fca4be280e92a';
+
+async function sha256Hex(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+function isUnlocked() {
+  try { return localStorage.getItem(AUTH_KEY) === AUTH_HASH; } catch (e) { return false; }
+}
+function unlockUI() {
+  document.body.classList.remove('auth-locked');
+  const gate = document.getElementById('auth-gate');
+  if (gate) gate.remove();
+}
+async function attemptLogin(e) {
+  e.preventDefault();
+  const errEl = document.getElementById('auth-error');
+  const user = document.getElementById('auth-user').value.trim();
+  const pass = document.getElementById('auth-pass').value;
+  let hash;
+  try {
+    hash = await sha256Hex(user + ':' + pass);
+  } catch (err) {
+    errEl.textContent = 'Login needs a secure (https) connection to this page.';
+    return;
+  }
+  if (hash === AUTH_HASH) {
+    try { localStorage.setItem(AUTH_KEY, hash); } catch (e) {}
+    unlockUI();
+    startApp();
+  } else {
+    errEl.textContent = 'Wrong username or password.';
+  }
+}
+
+let appStarted = false;
+function startApp() {
+  if (appStarted) return;
+  appStarted = true;
+  initSync();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('auth-form').addEventListener('submit', attemptLogin);
+  if (isUnlocked()) {
+    unlockUI();
+    startApp();
+  } else {
+    const p = document.getElementById('auth-pass');
+    if (p && p.focus) p.focus();
+  }
+});
+</script>
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
 <script>
@@ -1193,7 +1321,10 @@ function initSync() {
   });
 }
 
-initSync();
+// App bootstrap is gated: startApp() -> initSync() runs only after a successful
+// login (or when this browser already holds a valid unlock token). See the
+// password-gate script above.
+if (isUnlocked()) startApp();
 </script>
 
 </body>
